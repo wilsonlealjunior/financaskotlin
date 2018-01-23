@@ -7,7 +7,9 @@ import java.util.Locale
 /**
  * Created by infatec-suporte on 23/01/2018.
  */
-fun BigDecimal.formataParaBrasileiro(): String{
+fun BigDecimal.formataParaBrasileiro(): String {
     val formatoBrasileiro = DecimalFormat.getCurrencyInstance(Locale("pt", "br"))
-    return  formatoBrasileiro.format(this).replace("R$","R$ ")
+    return formatoBrasileiro.format(this).
+            replace("R$", "R$ ").
+            replace("-R$", "R$ -")
 }

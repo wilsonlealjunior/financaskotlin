@@ -43,14 +43,11 @@ class ListaTransacoesAdapter(private val transacoes: List<Transacao>,
     }
 
     private fun adicionaValorEIcone(viewCriada: View, transacao: Transacao) {
-
-
         val cor: Int = corPor(transacao.tipo)
         val icone: Int = iconePor(transacao.tipo)
         viewCriada.transacao_icone.setBackgroundResource(icone)
         viewCriada.transacao_valor.setTextColor(cor)
         viewCriada.transacao_valor.text = transacao.valor.formataParaBrasileiro()
-
 
     }
 
