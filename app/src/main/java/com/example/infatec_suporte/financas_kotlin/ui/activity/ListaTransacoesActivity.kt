@@ -1,29 +1,16 @@
 package com.example.infatec_suporte.financas_kotlin.ui.activity
 
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
-import android.widget.Toast
 import com.example.infatec_suporte.financas_kotlin.R
-import com.example.infatec_suporte.financas_kotlin.extension.formataParaBrasileiro
+import com.example.infatec_suporte.financas_kotlin.delegate.TransacaoDelegate
 import com.example.infatec_suporte.financas_kotlin.model.Tipo
 import com.example.infatec_suporte.financas_kotlin.model.Transacao
 import com.example.infatec_suporte.financas_kotlin.ui.ResumeView
 import com.example.infatec_suporte.financas_kotlin.ui.adapter.ListaTransacoesAdapter
+import com.example.infatec_suporte.financas_kotlin.ui.dialog.AdicionaTransacaoDialog
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
-import kotlinx.android.synthetic.main.form_transacao.view.*
-import kotlinx.android.synthetic.main.resumo_card.*
-import java.math.BigDecimal
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Created by infatec-suporte on 23/01/2018.
@@ -39,17 +26,34 @@ class ListaTransacoesActivity : AppCompatActivity() {
 
         configurarResumo()
         configuraLista()
-
-        lista_transacoes_adiciona_receita.setOnClickListener {
-            configuraDialog()
-
-        }
+        configuraFab()
 
 
     }
 
+    private fun configuraFab() {
+        lista_transacoes_adiciona_receita.setOnClickListener {
+            chamaDialogDeAdicao(Tipo.RECEITA)
+        }
 
-    private fun AtualizaTransacoes(transacao: Transacao) {
+        lista_transacoes_adiciona_despesa.setOnClickListener {
+            chamaDialogDeAdicao(Tipo.DESPESA)
+        }
+    }
+
+    private fun chamaDialogDeAdicao(tipo: Tipo) {
+        AdicionaTransacaoDialog(window.decorView as ViewGroup, this)
+                .chama(tipo, object : TransacaoDelegate {
+                    override fun delegate(transacao: Transacao) {
+                        atualizaTransacoes(transacao)
+                        lista_transacoes_adiciona_menu.close(true)
+                    }
+
+                })
+    }
+
+
+    private fun atualizaTransacoes(transacao: Transacao) {
         transacoes.add(transacao)
         configuraLista()
         configurarResumo()
