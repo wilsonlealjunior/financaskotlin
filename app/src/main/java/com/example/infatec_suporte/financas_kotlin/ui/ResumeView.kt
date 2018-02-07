@@ -27,6 +27,7 @@ class ResumeView(private val context: Context, private val view: View, transacoe
         adicionaDespesa()
         adicionaTotal()
     }
+
     private fun adicionaDespesa() {
         val totalDespesa = resumo.despesa
         with(view.resumo_card_despesa) {
